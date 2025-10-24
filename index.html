@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Kolkata Food Venture - Plan Comparison</title>
+    <!-- Chosen Palette: Warm Harmony (Amber, Stone, Emerald, Red, Blue, Indigo, Purple) -->
+    <!-- Application Structure Plan: A single-page app with sticky nav. Core section uses filter buttons (All, Low, Medium, High Cost) to show relevant plan cards in a grid. Each card (Plan A-E) shows key stats and a budget donut chart. A "Deep Dive" section for Plan B remains. A final grouped bar chart compares *all* plans across generic cost categories. This filterable grid structure allows easy addition of new plans and lets us focus on budget ranges, enhancing comparison for 5+ options. -->
+    <!-- Visualization & Content Choices: [Plan A-E Budgets -> Goal: Inform -> Donut Chart -> Hover for details -> Clear % breakdown per plan -> Chart.js], [All Plans Comparison -> Goal: Compare -> Grouped Bar Chart -> Hover for details -> Directly contrasts scale across *generic* cost categories -> Chart.js], [Location Table (Plan B) -> Goal: Explore -> Interactive HTML Cards -> Click tab/button -> Engaging -> HTML/JS/Tailwind], [Partnership Pros/Cons (Plan B+) -> Goal: Inform -> 2-Column HTML List -> N/A -> Clear, highlights legal need -> HTML/Tailwind]. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 280px;
+        }
+
+        .bar-chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 450px;
+        }
+
+        nav a {
+            transition: all 0.2s ease-in-out;
+        }
+
+        nav a.active {
+            color: #a16207;
+            /* amber-700 */
+            font-weight: 600;
+            border-bottom-color: #a16207;
+        }
+
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #ca8a04;
+            /* yellow-600 */
+            color: #ca8a04;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .filter-btn {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .filter-btn.active {
+            background-color: #a16207;
+            /* amber-700 */
+            color: white;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .plan-card {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, height 0.3s ease-in-out, margin 0.3s ease-in-out;
+            transform-origin: top;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-50 text-stone-800">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-amber-700">Our Kolkata Food Venture</h1>
+                <div class="hidden sm:flex space-x-4 md:space-x-6">
+                    <a href="#summary"
+                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Summary</a>
+                    <a href="#comparison"
+                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Plan
+                        Comparison</a>
+                    <a href="#cost-analysis"
+                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Cost
+                        Analysis</a>
+                    <a href="#deep-dive"
+                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Book
+                        Café Deep Dive</a>
+                    <a href="#recommendations"
+                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Recommendations</a>
+                </div>
+                <button id="mobile-menu-btn"
+                    class="sm:hidden p-2 rounded-md text-stone-600 hover:text-amber-700 hover:bg-amber-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="sm:hidden hidden bg-white shadow-lg">
+            <a href="#summary" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Summary</a>
+            <a href="#comparison" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Plan
+                Comparison</a>
+            <a href="#cost-analysis" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Cost
+                Analysis</a>
+            <a href="#deep-dive" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Book Café
+                Deep Dive</a>
+            <a href="#recommendations"
+                class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Recommendations</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="summary" class="scroll-mt-20">
+            <div class="text-center bg-white p-6 md:p-10 rounded-xl shadow-lg border border-amber-100">
+                <h2 class="text-3xl font-bold text-amber-800 mb-4">Our Kolkata Food Venture Analysis</h2>
+                <p class="text-lg text-stone-700 max-w-3xl mx-auto">
+                    This is my analysis of five potential business paths for our food venture in Kolkata. It compares
+                    different models across various budgets, from a low-cost starter **Cloud Kitchen** to a
+                    high-investment **"Book Café"** and several unique mid-range kiosk ideas. This tool is for us to
+                    compare the capital, risks, and opportunities for each plan.
+                </p>
+            </div>
+        </section>
+
+        <section id="comparison" class="scroll-mt-20 mt-12 md:mt-16">
+            <h2 class="text-3xl font-bold text-center mb-6">Plan Comparison</h2>
+            <div class="flex justify-center flex-wrap gap-2 md:gap-4 mb-8">
+                <button class="filter-btn active bg-stone-200 text-stone-700 px-4 py-2 rounded-full font-medium"
+                    data-filter="all">All Plans</button>
+                <button class="filter-btn bg-stone-200 text-stone-700 px-4 py-2 rounded-full font-medium"
+                    data-filter="low">Low-Cost (~₹70k)</button>
+                <button class="filter-btn bg-stone-200 text-stone-700 px-4 py-2 rounded-full font-medium"
+                    data-filter="medium">Mid-Cost (₹1.5L - ₹2L)</button>
+                <button class="filter-btn bg-stone-200 text-stone-700 px-4 py-2 rounded-full font-medium"
+                    data-filter="high">High-Cost (₹5L+)</button>
+            </div>
+
+            <div id="plan-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <article id="plan-a"
+                    class="plan-card bg-white p-6 rounded-xl shadow-lg border border-stone-200 flex flex-col"
+                    data-cost-level="low">
+                    <h3 class="text-2xl font-bold text-emerald-700 mb-4 text-center">Plan A: The Cloud Kitchen</h3>
+                    <p class="text-stone-600 mb-6 text-center text-sm">A realistic and safe way to enter the market. I
+                        operate from my home kitchen and sell *only* online, keeping overheads low.</p>
+                    <div class="mb-6 space-y-3">
+                        <div class="flex justify-between items-center bg-emerald-50 p-3 rounded-lg">
+                            <span class="font-semibold text-emerald-800">Est. Starter Capital:</span>
+                            <span class="font-bold text-2xl text-emerald-700">~ ₹70,000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Business Model:</span>
+                            <span class="font-medium text-stone-700">Home-Based (Delivery)</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Primary Risk:</span>
+                            <span class="font-medium text-stone-700">Low (Low overhead)</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center mb-4">Sample Budget (Total: ₹70k)</h4>
+                    <div class="chart-container flex-grow">
+                        <canvas id="planAChart"></canvas>
+                    </div>
+                </article>
+
+                <article id="plan-c"
+                    class="plan-card bg-white p-6 rounded-xl shadow-lg border border-stone-200 flex flex-col"
+                    data-cost-level="medium">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-4 text-center">Plan C: Modern Chaat Cart</h3>
+                    <p class="text-stone-600 mb-6 text-center text-sm">A unique take on a classic. I'll focus on hygiene
+                        (gloves, mineral water) and fusion items like cheese dahi puri or vodka phuchka.</p>
+                    <div class="mb-6 space-y-3">
+                        <div class="flex justify-between items-center bg-blue-50 p-3 rounded-lg">
+                            <span class="font-semibold text-blue-800">Est. Starter Capital:</span>
+                            <span class="font-bold text-2xl text-blue-700">~ ₹1,75,000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Business Model:</span>
+                            <span class="font-medium text-stone-700">High-End Food Cart</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Primary Risk:</span>
+                            <span class="font-medium text-stone-700">Medium (Location)</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center mb-4">Sample Budget (Total: ₹1.75L)</h4>
+                    <div class="chart-container flex-grow">
+                        <canvas id="planCChart"></canvas>
+                    </div>
+                </article>
+
+                <article id="plan-d"
+                    class="plan-card bg-white p-6 rounded-xl shadow-lg border border-stone-200 flex flex-col"
+                    data-cost-level="medium">
+                    <h3 class="text-2xl font-bold text-indigo-700 mb-4 text-center">Plan D: Specialty Momo Kiosk</h3>
+                    <p class="text-stone-600 mb-6 text-center text-sm">More than just steamed momos. We'll offer
+                        pan-fried, kothey, and thukpa, paired with unique drinks like bubble tea.</p>
+                    <div class="mb-6 space-y-3">
+                        <div class="flex justify-between items-center bg-indigo-50 p-3 rounded-lg">
+                            <span class="font-semibold text-indigo-800">Est. Starter Capital:</span>
+                            <span class="font-bold text-2xl text-indigo-700">~ ₹2,00,000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Business Model:</span>
+                            <span class="font-medium text-stone-700">Small Kiosk (Walk-in)</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Primary Risk:</span>
+                            <span class="font-medium text-stone-700">Medium (Rent, Staff)</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center mb-4">Sample Budget (Total: ₹2.0L)</h4>
+                    <div class="chart-container flex-grow">
+                        <canvas id="planDChart"></canvas>
+                    </div>
+                </article>
+
+                <article id="plan-e"
+                    class="plan-card bg-white p-6 rounded-xl shadow-lg border border-stone-200 flex flex-col"
+                    data-cost-level="medium">
+                    <h3 class="text-2xl font-bold text-purple-700 mb-4 text-center">Plan E: Gourmet Sandwich Bar</h3>
+                    <p class="text-stone-600 mb-6 text-center text-sm">Targeting the Salt Lake/New Town office crowd.
+                        We'll focus on fresh, healthy sandwiches (like pesto) and smoothies.</p>
+                    <div class="mb-6 space-y-3">
+                        <div class="flex justify-between items-center bg-purple-50 p-3 rounded-lg">
+                            <span class="font-semibold text-purple-800">Est. Starter Capital:</span>
+                            <span class="font-bold text-2xl text-purple-700">~ ₹1,90,000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Business Model:</span>
+                            <span class="font-medium text-stone-700">Kiosk/Small Counter</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Primary Risk:</span>
+                            <span class="font-medium text-stone-700">Medium (Rent, Quality)</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center mb-4">Sample Budget (Total: ₹1.9L)</h4>
+                    <div class="chart-container flex-grow">
+                        <canvas id="planEChart"></canvas>
+                    </div>
+                </article>
+
+                <article id="plan-b"
+                    class="plan-card bg-white p-6 rounded-xl shadow-lg border border-stone-200 flex flex-col"
+                    data-cost-level="high">
+                    <h3 class="text-2xl font-bold text-red-700 mb-4 text-center">Plan B: The Book Café</h3>
+                    <p class="text-stone-600 mb-6 text-center text-sm">A high-potential but high-cost physical café.
+                        This model requires significant capital and partners to pool money.</p>
+                    <div class="mb-6 space-y-3">
+                        <div class="flex justify-between items-center bg-red-50 p-3 rounded-lg">
+                            <span class="font-semibold text-red-800">Min. Required Capital:</span>
+                            <span class="font-bold text-2xl text-red-700">~ ₹5,85,000</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Business Model:</span>
+                            <span class="font-medium text-stone-700">Physical Shop (Walk-in)</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-lg">
+                            <span class="font-semibold text-stone-800">Primary Risk:</span>
+                            <span class="font-medium text-stone-700">High (Rent, Staff, Setup)</span>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-semibold text-center mb-4">Estimated Budget (Total: ₹5.85L)</h4>
+                    <div class="chart-container flex-grow">
+                        <canvas id="planBChart"></canvas>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="cost-analysis" class="scroll-mt-20 mt-12 md:mt-16">
+            <h2 class="text-3xl font-bold text-center mb-10">Direct Cost Comparison (All Plans)</h2>
+            <p class="text-center text-stone-600 mb-8 max-w-2xl mx-auto">This chart directly compares our budget
+                categories. Notice how "Rent/Deposit" and "Equipment" for the high-cost plan (B) dwarf all other costs.
+                The mid-range plans (C, D, E) offer a balance, while our low-cost plan (A) avoids rent entirely.</p>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
+                <div class="bar-chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="scroll-mt-20 mt-12 md:mt-16">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-stone-200">
+                <h2 class="text-3xl font-bold text-center mb-2">Deep Dive: The Book Café (Plan B)</h2>
+                <p class="text-center text-stone-600 mb-8 max-w-2xl mx-auto">This plan is our most complex and
+                    expensive. It requires careful consideration of partnerships, location, and the detailed budget.
+                    These tabs explore the key components.</p>
+
+                <div class="border-b border-stone-200 mb-6">
+                    <nav class="-mb-px flex justify-center space-x-4 md:space-x-8" aria-label="Tabs">
+                        <button class="tab-btn active font-medium text-lg px-1 py-3" data-tab="partnership">🤝
+                            Partnership</button>
+                        <button class="tab-btn font-medium text-lg px-1 py-3" data-tab="location">📍 Location</button>
+                        <button class="tab-btn font-medium text-lg px-1 py-3" data-tab="budget">Detailed Budget</button>
+                    </nav>
+                </div>
+
+                <div id="partnership-content" class="tab-content active">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Forming a Partnership</h3>
+                    <p class="text-center text-stone-600 mb-6 max-w-2xl mx-auto">To fund Plan B (or even D & E), we'll
+                        likely need partners. This is a business marriage with pros and cons.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-emerald-800 mb-3">The Pros</h4>
+                            <ul class="list-disc list-inside space-y-2 text-emerald-700">
+                                <li>
+                                    <span class="font-semibold">More Capital:</span> If 4 of us pool ₹1.5L each, we have
+                                    ₹6L. This makes Plan B possible.
+                                </li>
+                                <li>
+                                    <span class="font-semibold">Shared Workload:</span> One of us can manage the
+                                    counter, one handles accounts, one handles marketing.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 p-6 rounded-lg">
+                            <h4 class="text-xl font-bold text-red-800 mb-3">The Cons</h4>
+                            <ul class="list-disc list-inside space-y-2 text-red-700">
+                                <li>
+                                    <span class="font-semibold">Disagreements:</span> We might fight over money, work
+                                    hours, or business decisions.
+                                </li>
+                                <li>
+                                    <span class="font-semibold">Risking Friendships:</span> A failed business could
+                                    destroy our friendships.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-yellow-50 border-2 border-yellow-500 p-5 rounded-lg text-center">
+                        <h4 class="text-lg font-bold text-yellow-800 mb-2">CRITICAL SOLUTION</h4>
+                        <p class="text-yellow-700 font-medium">We **MUST** hire a lawyer and draft a legal **Partnership
+                            Agreement** *before* we spend any money. This document must clearly state all our roles,
+                            investments, profit splits, and exit clauses.</p>
+                    </div>
+                </div>
+
+                <div id="location-content" class="tab-content">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Location Analysis (For Plans B, D, E)</h3>
+                    <p class="text-center text-stone-600 mb-6 max-w-2xl mx-auto">For a physical kiosk or café, location
+                        is everything. We need high footfall from our target audience (students or young professionals).
+                    </p>
+                    <div class="space-y-4">
+                        <div class="rounded-lg border border-stone-200 bg-stone-50 overflow-hidden">
+                            <h4 class="text-lg font-semibold p-4 bg-stone-100">1. South Kolkata (Student Hub)</h4>
+                            <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div><strong class="text-stone-700">Specific Areas:</strong> Jadavpur (near 8B),
+                                    Golpark, Southern Avenue, Ballygunge.</div>
+                                <div><strong class="text-stone-700">Why This Area?</strong> Massive student footfall
+                                    (J.U., Presidency). High demand for hangout spots.</div>
+                                <div class="md:text-right"><strong class="text-stone-700">Est. Rent:</strong> <span
+                                        class="font-medium text-red-600">₹25,000 - ₹50,000+ / month</span></div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border border-stone-200 bg-stone-50 overflow-hidden">
+                            <h4 class="text-lg font-semibold p-4 bg-stone-100">2. IT & Corporate Hub</h4>
+                            <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div><strong class="text-stone-700">Specific Areas:</strong> Salt Lake (Sector V), New
+                                    Town (Action Area 1 & 2).</div>
+                                <div><strong class="text-stone-700">Why This Area?</strong> Thousands of young office
+                                    workers with disposable income. High demand for quick-service and "work-friendly"
+                                    spots.</div>
+                                <div class="md:text-right"><strong class="text-stone-700">Est. Rent:</strong> <span
+                                        class="font-medium text-red-600">₹30,000 - ₹60,000+ / month</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                        <p class="font-semibold text-amber-800">**Conclusion on Location:** Our best bet is to target
+                            the **Jadavpur-Golpark-Ballygunge belt** for students or **New Town/Salt Lake** for the
+                            office crowd.</p>
+                    </div>
+                </div>
+
+                <div id="budget-content" class="tab-content">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Realistic "Book Café" Budget (Plan B)</h3>
+                    <p class="text-center text-stone-600 mb-6 max-w-2xl mx-auto">This budget assumes we find a 200 sq ft
+                        shop for ₹35,000/month rent. This is a *minimum* estimate.</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-stone-200">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                                        Category</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                                        Estimated Minimum Cost</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                                        Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr class="bg-red-50">
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-red-800">1. Shop Rent &
+                                        Deposit</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-red-700">₹2,45,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-red-600">(₹35,000 first month +
+                                        6 months deposit of ₹2,10,000)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">2. Equipment</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹1,30,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">Commercial grade.
+                                        (Coffee Machine: ~₹75k, Waffle Iron: ~₹15k, etc.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">3. Interior & Setup</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹1,00,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">Counter, book
+                                        shelves, electrical, plumbing, paint, basic seating.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">4. Legal & Licenses</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹10,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">FSSAI (State
+                                        License), KMC Trade License, Fire NOC.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">5. Initial Stock</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹50,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">Coffee, milk, waffle
+                                        mix, syrups, packaging, second-hand books.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium">6. Emergency Fund</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹50,000
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">To pay rent &
+                                        salaries for first 2-3 months *before* we make profit.</td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="bg-stone-100">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800 uppercase">
+                                        Total Minimum Budget</td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-extrabold text-2xl text-amber-800">
+                                        ₹5,85,000</td>
+                                    <td class="px-6 py-4 whitespace-normal text-sm"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="recommendations" class="scroll-mt-20 mt-12 md:mt-16">
+            <div class="bg-amber-50 border-2 border-amber-300 p-8 md:p-10 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-amber-800 mb-6 text-center">My Summary & Recommendations</h2>
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <span class="flex-shrink-0 font-bold text-2xl text-amber-700">1.</span>
+                        <p class="text-lg text-stone-700">**Plan A (Cloud Kitchen)** is our safest, low-cost entry point
+                            at **~₹70,000**. We can start this alone, test our menu, and build a brand with minimal
+                            risk.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="flex-shrink-0 font-bold text-2xl text-amber-700">2.</span>
+                        <p class="text-lg text-stone-700">The **Mid-Cost Plans (C, D, E)** are our "unique" options in
+                            the **₹1.75L - ₹2.0L** range. They offer a physical presence but have higher risk due to
+                            cart/kiosk costs and potential rent.</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="flex-shrink-0 font-bold text-2xl text-amber-700">3.</span>
+                        <p class="text-lg text-stone-700">The **"Book Café" (Plan B)** is our most ambitious idea, but
+                            it's a much larger project requiring a minimum of **₹5 Lakh - ₹6 Lakh** to start correctly.
+                        </p>
+                    </div>
+                    <div class="flex items-start space-x-3 bg-white p-4 rounded-md shadow">
+                        <span class="flex-shrink-0 font-bold text-2xl text-amber-700">4.</span>
+                        <p class="text-lg text-stone-700"><strong class="text-amber-800">For any plan above "A", our
+                                first step is *not* finding a shop.</strong> It is:
+                        <ul class="list-disc list-inside mt-2 space-y-1 font-medium">
+                            <li>Deciding if we want to find partners.</li>
+                            <li>Having the serious conversation about roles and money.</li>
+                            <li>Drafting a legal Partnership Agreement if we proceed.</li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-16 pb-8 text-center">
+        <p class="text-stone-500">Our Business Plan Analysis | Generated by Gemini</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const planAData = {
+                labels: ['Legal (₹5k)', 'Kitchen Setup (₹25k)', 'Packaging (₹10k)', 'Raw Materials (₹15k)', 'Marketing (₹5k)', 'Emergency Fund (₹10k)'],
+                values: [5000, 25000, 10000, 15000, 5000, 10000],
+                colors: ['#78716c', '#a8a29e', '#d6d3d1', '#f59e0b', '#fbbf24', '#fcd34d']
+            };
+
+            const planBData = {
+                labels: ['Rent & Deposit (₹245k)', 'Equipment (₹130k)', 'Interior (₹100k)', 'Legal (₹10k)', 'Initial Stock (₹50k)', 'Emergency Fund (₹50k)'],
+                values: [245000, 130000, 100000, 10000, 50000, 50000],
+                colors: ['#b91c1c', '#dc2626', '#f87171', '#78716c', '#f59e0b', '#fcd34d']
+            };
+
+            const planCData = {
+                labels: ['Custom Cart (₹60k)', 'Equipment (₹30k)', 'Licenses (₹10k)', 'Initial Stock (₹30k)', 'Emergency Fund (₹45k)'],
+                values: [60000, 30000, 10000, 30000, 45000],
+                colors: ['#1d4ed8', '#3b82f6', '#78716c', '#f59e0b', '#fcd34d']
+            };
+
+            const planDData = {
+                labels: ['Kiosk Rent Deposit (₹60k)', 'Kiosk Setup (₹50k)', 'Equipment (₹40k)', 'Licenses (₹10k)', 'Initial Stock (₹20k)', 'Emergency Fund (₹20k)'],
+                values: [60000, 50000, 40000, 10000, 20000, 20000],
+                colors: ['#4338ca', '#6366f1', '#818cf8', '#78716c', '#f59e0b', '#fcd34d']
+            };
+
+            const planEData = {
+                labels: ['Kiosk/Shop Deposit (₹50k)', 'Equipment (₹60k)', 'Setup/Branding (₹30k)', 'Licenses (₹10k)', 'Initial Stock (₹20k)', 'Emergency Fund (₹20k)'],
+                values: [50000, 60000, 30000, 10000, 20000, 20000],
+                colors: ['#7e22ce', '#9333ea', '#a855f7', '#78716c', '#f59e0b', '#fcd34d']
+            };
+
+
+            const formatCurrency = (value) => `₹${new Intl.NumberFormat('en-IN').format(value)}`;
+
+            function createDonutChart(canvasId, data, title) {
+                const ctx = document.getElementById(canvasId);
+                if (!ctx) return;
+                new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.values,
+                            backgroundColor: data.colors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 15,
+                                    font: { size: 10 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label = label.split('(')[0].trim();
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += `: ${formatCurrency(context.parsed)}`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createDonutChart('planAChart', planAData, 'Plan A Budget: ₹70,000');
+            createDonutChart('planBChart', planBData, 'Plan B Budget: ₹5,85,000');
+            createDonutChart('planCChart', planCData, 'Plan C Budget: ₹1,75,000');
+            createDonutChart('planDChart', planDData, 'Plan D Budget: ₹2,00,000');
+            createDonutChart('planEChart', planEData, 'Plan E Budget: ₹1,90,000');
+
+            const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+            const allLabels = ['Licenses', 'Setup/Cart/Interior', 'Equipment', 'Initial Stock', 'Emergency Fund', 'Rent/Deposit'];
+
+            const comparisonData = {
+                labels: allLabels,
+                datasets: [
+                    {
+                        label: 'Plan A: Cloud Kitchen',
+                        data: [5000, 25000, 0, 15000, 10000, 0],
+                        backgroundColor: '#10b981',
+                    },
+                    {
+                        label: 'Plan C: Chaat Cart',
+                        data: [10000, 60000, 30000, 30000, 45000, 0],
+                        backgroundColor: '#3b82f6',
+                    },
+                    {
+                        label: 'Plan D: Momo Kiosk',
+                        data: [10000, 50000, 40000, 20000, 20000, 60000],
+                        backgroundColor: '#6366f1',
+                    },
+                    {
+                        label: 'Plan E: Sandwich Bar',
+                        data: [10000, 30000, 60000, 20000, 20000, 50000],
+                        backgroundColor: '#9333ea',
+                    },
+                    {
+                        label: 'Plan B: Book Café',
+                        data: [10000, 100000, 130000, 50000, 50000, 245000],
+                        backgroundColor: '#ef4444',
+                    }
+                ]
+            };
+
+            new Chart(comparisonCtx, {
+                type: 'bar',
+                data: comparisonData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += formatCurrency(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const planCards = document.querySelectorAll('.plan-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const filter = button.getAttribute('data-filter');
+
+                    planCards.forEach(card => {
+                        const costLevel = card.getAttribute('data-cost-level');
+                        if (filter === 'all' || filter === costLevel) {
+                            card.style.display = 'flex';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 10);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.95)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const targetTab = button.getAttribute('data-tab');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${targetTab}-content`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
