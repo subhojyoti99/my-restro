@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Kolkata Food Venture - Plan Comparison</title>
     <!-- Chosen Palette: Warm Harmony (Amber, Stone, Emerald, Red, Blue, Indigo, Purple) -->
-    <!-- Application Structure Plan: A single-page app with sticky nav. Core section uses filter buttons (All, Low, Medium, High Cost) to show relevant plan cards in a grid. Each card (Plan A-E) shows key stats and a budget donut chart. A "Deep Dive" section for Plan B remains. A "Mindset" section synthesizes qualitative advice. A final grouped bar chart compares *all* plans. This filterable grid structure allows easy addition of new plans and lets us focus on budget ranges, enhancing comparison. -->
+    <!-- Application Structure Plan: A single-page app with sticky nav. Core section uses filter buttons (All, Low, Medium, High Cost) to show relevant plan cards in a grid. Each card (Plan A-E) shows key stats and a budget donut chart. A "Deep Dive" section for Plan B remains. A final grouped bar chart compares *all* plans across generic cost categories. This filterable grid structure allows easy addition of new plans and lets us focus on budget ranges, enhancing comparison for 5+ options. -->
     <!-- Visualization & Content Choices: [Plan A-E Budgets -> Goal: Inform -> Donut Chart -> Hover for details -> Clear % breakdown per plan -> Chart.js], [All Plans Comparison -> Goal: Compare -> Grouped Bar Chart -> Hover for details -> Directly contrasts scale across *generic* cost categories -> Chart.js], [Location Table (Plan B) -> Goal: Explore -> Interactive HTML Cards -> Click tab/button -> Engaging -> HTML/JS/Tailwind], [Partnership Pros/Cons (Plan B+) -> Goal: Inform -> 2-Column HTML List -> N/A -> Clear, highlights legal need -> HTML/Tailwind]. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -105,9 +105,6 @@
                     <a href="#deep-dive"
                         class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Book
                         Café Deep Dive</a>
-                    <a href="#mindset"
-                        class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Our
-                        Mindset</a>
                     <a href="#recommendations"
                         class="nav-link text-stone-600 hover:text-amber-700 border-b-2 border-transparent pb-1">Recommendations</a>
                 </div>
@@ -129,8 +126,6 @@
                 Analysis</a>
             <a href="#deep-dive" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Book Café
                 Deep Dive</a>
-            <a href="#mindset" class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Our
-                Mindset</a>
             <a href="#recommendations"
                 class="nav-link block px-4 py-3 text-base text-stone-600 hover:bg-amber-50">Recommendations</a>
         </div>
@@ -143,9 +138,8 @@
                 <h2 class="text-3xl font-bold text-amber-800 mb-4">Our Kolkata Food Venture Analysis</h2>
                 <p class="text-lg text-stone-700 max-w-3xl mx-auto">
                     This is my analysis of five potential business paths for our food venture in Kolkata. It compares
-                    different models across various budgets, from a low-cost starter <strong>Cloud Kitchen</strong> to a
-                    high-investment <strong>"Book Café"</strong> and several unique mid-range kiosk ideas. This tool is
-                    for us to
+                    different models across various budgets, from a low-cost starter **Cloud Kitchen** to a
+                    high-investment **"Book Café"** and several unique mid-range kiosk ideas. This tool is for us to
                     compare the capital, risks, and opportunities for each plan.
                 </p>
             </div>
@@ -171,7 +165,7 @@
                     data-cost-level="low">
                     <h3 class="text-2xl font-bold text-emerald-700 mb-4 text-center">Plan A: The Cloud Kitchen</h3>
                     <p class="text-stone-600 mb-6 text-center text-sm">A realistic and safe way to enter the market. I
-                        operate from my home kitchen and sell <em>only</em> online, keeping overheads low.</p>
+                        operate from my home kitchen and sell *only* online, keeping overheads low.</p>
                     <div class="mb-6 space-y-3">
                         <div class="flex justify-between items-center bg-emerald-50 p-3 rounded-lg">
                             <span class="font-semibold text-emerald-800">Est. Starter Capital:</span>
@@ -360,12 +354,9 @@
                     </div>
                     <div class="mt-6 bg-yellow-50 border-2 border-yellow-500 p-5 rounded-lg text-center">
                         <h4 class="text-lg font-bold text-yellow-800 mb-2">CRITICAL SOLUTION</h4>
-                        <p class="text-yellow-700 font-medium">We <strong>MUST</strong> hire a lawyer and draft a legal
-                            <strong>Partnership
-                                Agreement</strong> <em>before</em> we spend any money. This document must clearly state
-                            all our roles,
-                            investments, profit splits, and exit clauses.
-                        </p>
+                        <p class="text-yellow-700 font-medium">We **MUST** hire a lawyer and draft a legal **Partnership
+                            Agreement** *before* we spend any money. This document must clearly state all our roles,
+                            investments, profit splits, and exit clauses.</p>
                     </div>
                 </div>
 
@@ -400,10 +391,8 @@
                         </div>
                     </div>
                     <div class="mt-6 text-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                        <p class="font-semibold text-amber-800"><strong>Conclusion on Location:</strong> Our best bet is
-                            to target
-                            the <strong>Jadavpur-Golpark-Ballygunge belt</strong> for students or <strong>New Town/Salt
-                                Lake</strong> for the
+                        <p class="font-semibold text-amber-800">**Conclusion on Location:** Our best bet is to target
+                            the **Jadavpur-Golpark-Ballygunge belt** for students or **New Town/Salt Lake** for the
                             office crowd.</p>
                     </div>
                 </div>
@@ -411,7 +400,7 @@
                 <div id="budget-content" class="tab-content">
                     <h3 class="text-2xl font-semibold mb-6 text-center">Realistic "Book Café" Budget (Plan B)</h3>
                     <p class="text-center text-stone-600 mb-6 max-w-2xl mx-auto">This budget assumes we find a 200 sq ft
-                        shop for ₹35,000/month rent. This is a <em>minimum</em> estimate.</p>
+                        shop for ₹35,000/month rent. This is a *minimum* estimate.</p>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-stone-200">
                             <thead class="bg-stone-50">
@@ -469,7 +458,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap font-bold text-lg text-stone-800">₹50,000
                                     </td>
                                     <td class="px-6 py-4 whitespace-normal text-sm text-stone-600">To pay rent &
-                                        salaries for first 2-3 months <em>before</em> we make profit.</td>
+                                        salaries for first 2-3 months *before* we make profit.</td>
                                 </tr>
                             </tbody>
                             <tfoot class="bg-stone-100">
@@ -488,150 +477,32 @@
             </div>
         </section>
 
-        <section id="mindset" class="scroll-mt-20 mt-12 md:mt-16">
-            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-stone-200">
-                <h2 class="text-3xl font-bold text-center mb-10 text-amber-800">Our Mindset: Building Smart Like
-                    Bikramgarh</h2>
-
-                <div class="max-w-4xl mx-auto space-y-8">
-
-                    <div>
-                        <h3 class="text-2xl font-semibold mb-3 text-center text-stone-800">Starting Point: Our "Hills
-                            Meet the Plains" Moment</h3>
-                        <p class="text-stone-700 text-lg leading-relaxed text-center">Remembering that Times of India
-                            article about Bikramgarh? It's our story too. People arrived there, maybe like us, not with
-                            everything, but with what they <em>had</em> skills, drive, community. They stood where we
-                            stand
-                            now, with our resources, savings and dreams, looking at the city's opportunities.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                        <div class="text-center md:text-left">
-                            <h3 class="text-2xl font-semibold mb-3 text-stone-800">The Bikramgarh Choice: Invest First
-                            </h3>
-                            <p class="text-stone-700 leading-relaxed mb-4">They didn't chase instant rewards. They
-                                <em>invested</em>. They started small – the momo stalls like Denzong Kitchen, the home
-                                eateries. They poured energy into creating <em>assets</em>, building the <em>engine</em>
-                                first.
-                                Bikramgarh became vibrant because <em>they</em> made it valuable through hard work and
-                                smart
-                                beginnings.
-                            </p>
-                            <p class="text-stone-700 leading-relaxed font-medium">They built the foundation that later
-                                gave them the freedom to afford more.</p>
-                        </div>
-                        <div
-                            class="my-4 md:my-0 bg-stone-100 border border-stone-200 rounded-lg p-4 text-center text-stone-500 italic">
-                            <img src="./image.png" alt="entrepreneurs" />
-                            <p class="text-sm mt-2">Like the entrepreneurs who built Bikramgarh's food scene.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-md shadow-sm">
-                        <h3 class="text-2xl font-semibold mb-3 text-yellow-800">Reality Check 1: The "Night Duty" Trap
-                            (Your Friend's Feedback)</h3>
-                        <p class="text-yellow-700 leading-relaxed mb-4">Your friend's feedback is GOLD. She's right – a
-                            <em>generic</em> home kitchen selling biryani or pizza <em>will</em> fail. It becomes a
-                            low-order "night
-                            duty" fighting giants. That's not our plan.
-                        </p>
-                        <p class="text-yellow-700 leading-relaxed font-semibold">This feedback doesn't kill the Cloud
-                            Kitchen; it <em>focuses</em> it. It pushes us towards a smarter niche: the <strong>daytime
-                                office lunch
-                                market</strong> (Plan A - Refined). No late nights, less competition with giants,
-                            targeting a real
-                            <em>need</em>.
-                        </p>
-                    </div>
-
-                    <div class="bg-red-50 border-l-4 border-red-400 p-6 rounded-md shadow-sm">
-                        <h3 class="text-2xl font-semibold mb-3 text-red-800">Reality Check 2: The Staff Dependency Risk
-                            (Podcast Wisdom)</h3>
-                        <p class="text-red-700 leading-relaxed mb-4">The podcast warning is also crucial: 90% fail,
-                            often because the business relies too much on hired cooks early on. If they leave, the
-                            business dies. Again, this isn't a "stop" sign; it's a "start smart" sign.</p>
-                        <ul class="list-disc list-inside space-y-2 text-red-700 mb-4 pl-4">
-                            <li><strong>Start Small & Be the Business:</strong> Plan A is perfect. <em>We</em> are the
-                                cooks,
-                                the managers. Success depends on <em>us</em>.</li>
-                            <li><strong>Master Before Delegating:</strong> We learn <em>everything</em> first – cooking,
-                                costs,
-                                customers. The business core is <em>our</em> knowledge.</li>
-                            <li><strong>Build Resilience:</strong> If we eventually hire and they leave, <em>we</em>
-                                still know
-                                how to run it. We aren't helpless.</li>
-                        </ul>
-                        <p class="text-red-700 leading-relaxed font-semibold">Both warnings push us towards the same
-                            smart strategy: Start lean, focused, and <em>be</em> the business initially.</p>
-                    </div>
-
-                    <div>
-                        <h3 class="text-2xl font-semibold mb-3 text-center text-stone-800">Our Two-Step Path: From
-                            'Denzong' to 'Chowman'</h3>
-                        <p class="text-stone-700 text-lg leading-relaxed text-center mb-6">These local success stories
-                            show us the way:</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                            <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg shadow-sm">
-                                <h4 class="text-xl font-bold text-blue-800 mb-3">Phase 1: Our "Denzong" Phase (Year 1)
-                                </h4>
-                                <p class="text-blue-700 leading-relaxed">Like Denzong Kitchen starting small, mastering
-                                    its craft for a niche. <strong>This is our Plan A (Cloud Kitchen - Office Lunch
-                                        Focus).</strong>
-                                    Goal: Master our food, get 5-star reviews, build loyalty. We <em>are</em> the
-                                    business,
-                                    avoiding the early risks.</p>
-                            </div>
-                            <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-lg shadow-sm">
-                                <h4 class="text-xl font-bold text-emerald-800 mb-3">Phase 2: Our "Chowman" Phase (Year
-                                    2+)</h4>
-                                <p class="text-emerald-700 leading-relaxed">Like Chowman scaling a <em>proven</em>
-                                    concept.
-                                    This is our future. <em>After</em> Plan A is profitable, we use earnings + our
-                                    <em>proven</em>
-                                    menu to fund a kiosk (Plan C, D, E) or café (Plan B). We scale what works, not just
-                                    a dream.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
         <section id="recommendations" class="scroll-mt-20 mt-12 md:mt-16">
             <div class="bg-amber-50 border-2 border-amber-300 p-8 md:p-10 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold text-amber-800 mb-6 text-center">My Summary & Recommendations</h2>
                 <div class="max-w-3xl mx-auto space-y-4">
                     <div class="flex items-start space-x-3">
                         <span class="flex-shrink-0 font-bold text-2xl text-amber-700">1.</span>
-                        <p class="text-lg text-stone-700"><strong>Plan A (Cloud Kitchen)</strong> is our safest,
-                            low-cost entry point
-                            at <strong>~₹70,000</strong>. We can start this alone, test our menu, and build a brand with
-                            minimal
-                            risk. This is our "Denzong Phase."</p>
+                        <p class="text-lg text-stone-700">**Plan A (Cloud Kitchen)** is our safest, low-cost entry point
+                            at **~₹70,000**. We can start this alone, test our menu, and build a brand with minimal
+                            risk.</p>
                     </div>
                     <div class="flex items-start space-x-3">
                         <span class="flex-shrink-0 font-bold text-2xl text-amber-700">2.</span>
-                        <p class="text-lg text-stone-700">The <strong>Mid-Cost Plans (C, D, E)</strong> are our "unique"
-                            options in
-                            the <strong>₹1.75L - ₹2.0L</strong> range. These are excellent "Phase 2" goals to scale into
-                            <em>after</em> Plan
-                            A is successful.
-                        </p>
+                        <p class="text-lg text-stone-700">The **Mid-Cost Plans (C, D, E)** are our "unique" options in
+                            the **₹1.75L - ₹2.0L** range. They offer a physical presence but have higher risk due to
+                            cart/kiosk costs and potential rent.</p>
                     </div>
                     <div class="flex items-start space-x-3">
                         <span class="flex-shrink-0 font-bold text-2xl text-amber-700">3.</span>
-                        <p class="text-lg text-stone-700">The <strong>"Book Café" (Plan B)</strong> is our most
-                            ambitious idea, but
-                            it's a much larger project requiring a minimum of <strong>₹5 Lakh - ₹6 Lakh</strong> to
-                            start correctly.
-                            This is our long-term "Chowman Phase."</p>
+                        <p class="text-lg text-stone-700">The **"Book Café" (Plan B)** is our most ambitious idea, but
+                            it's a much larger project requiring a minimum of **₹5 Lakh - ₹6 Lakh** to start correctly.
+                        </p>
                     </div>
                     <div class="flex items-start space-x-3 bg-white p-4 rounded-md shadow">
                         <span class="flex-shrink-0 font-bold text-2xl text-amber-700">4.</span>
                         <p class="text-lg text-stone-700"><strong class="text-amber-800">For any plan above "A", our
-                                first step is <em>not</em> finding a shop.</strong> It is:
+                                first step is *not* finding a shop.</strong> It is:
                         <ul class="list-disc list-inside mt-2 space-y-1 font-medium">
                             <li>Deciding if we want to find partners.</li>
                             <li>Having the serious conversation about roles and money.</li>
@@ -646,7 +517,7 @@
     </main>
 
     <footer class="mt-16 pb-8 text-center">
-        <p class="text-stone-500">Our Business Plan Analysis | Generated by Gemini</p>
+        <p class="text-stone-500">Our Business Plan Analysis | 2025</p>
     </footer>
 
     <script>
@@ -783,7 +654,6 @@
                             ticks: {
                                 callback: function (value) {
                                     return formatCurrency(value);
-
                                 }
                             }
                         }
@@ -863,7 +733,6 @@
 
             mobileMenu.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
-
             });
 
             const navLinks = document.querySelectorAll('.nav-link');
